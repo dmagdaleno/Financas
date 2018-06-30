@@ -21,8 +21,8 @@ class ListaTransacoesAdapter(context: Context,
         return transacoes[posicao]
     }
 
-    override fun getItemId(p0: Int): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getItemId(posicao: Int): Long {
+        return 0
     }
 
     override fun getCount(): Int {
