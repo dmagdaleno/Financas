@@ -17,8 +17,8 @@ class ListaTransacoesAdapter(context: Context,
         return LayoutInflater.from(context).inflate(R.layout.transacao_item, parent, false)
     }
 
-    override fun getItem(p0: Int): Any {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getItem(posicao: Int): String {
+        return transacoes[posicao]
     }
 
     override fun getItemId(p0: Int): Long {
