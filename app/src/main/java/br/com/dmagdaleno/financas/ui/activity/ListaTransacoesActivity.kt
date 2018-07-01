@@ -3,7 +3,7 @@ package br.com.dmagdaleno.financas.ui.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import br.com.dmagdaleno.financas.R
-import br.com.dmagdaleno.financas.adapter.ListaTransacoesAdapter
+import br.com.dmagdaleno.financas.ui.adapter.ListaTransacoesAdapter
 import kotlinx.android.synthetic.main.activity_lista_transacoes.*
 
 class ListaTransacoesActivity: AppCompatActivity() {

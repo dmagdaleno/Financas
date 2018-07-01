@@ -1,4 +1,4 @@
-package br.com.dmagdaleno.financas.adapter
+package br.com.dmagdaleno.financas.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
