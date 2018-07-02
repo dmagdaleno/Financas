@@ -3,10 +3,13 @@ package br.com.dmagdaleno.financas.ui.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import br.com.dmagdaleno.financas.R
+import br.com.dmagdaleno.financas.extension.formatado
 import br.com.dmagdaleno.financas.model.Tipo
 import br.com.dmagdaleno.financas.model.Transacao
+import br.com.dmagdaleno.financas.ui.ResumoView
 import br.com.dmagdaleno.financas.ui.adapter.ListaTransacoesAdapter
 import kotlinx.android.synthetic.main.activity_lista_transacoes.*
+import kotlinx.android.synthetic.main.resumo_card.*
 import java.math.BigDecimal
 
 class ListaTransacoesActivity: AppCompatActivity() {
@@ -17,7 +20,17 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
         val transacoes: List<Transacao> = listaTransacoesDeExemplo()
 
+        configuraResumo(transacoes)
+
         configuraListaTransacoes(transacoes)
+    }
+
+    private fun configuraResumo(transacoes: List<Transacao>) {
+        val view = window.decorView
+        val resumoView = ResumoView(this, view, transacoes)
+        resumoView.adicionaReceita()
+        resumoView.adicionaDespesa()
+        resumoView.adicionaTotal()
     }
 
     private fun configuraListaTransacoes(transacoes: List<Transacao>) {
