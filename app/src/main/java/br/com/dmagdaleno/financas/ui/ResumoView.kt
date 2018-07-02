@@ -26,14 +26,14 @@ class ResumoView(private val context: Context,
 
     private fun adicionaReceita() {
         with(view.resumo_card_receita){
-            text = resumo.receita().formatado()
+            text = resumo.receita.formatado()
             setTextColor(pegaCor(R.color.receita))
         }
     }
 
     private fun adicionaDespesa() {
         with(view.resumo_card_despesa){
-            text = resumo.despesa().formatado()
+            text = resumo.despesa.formatado()
             setTextColor(pegaCor(R.color.despesa))
         }
     }
