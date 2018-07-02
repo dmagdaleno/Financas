@@ -5,6 +5,12 @@ import java.text.DecimalFormat
 import java.util.Locale
 
 fun BigDecimal.formatado(): String {
-    val formatador = DecimalFormat.getCurrencyInstance(Locale("pt", "BR"))
-    return formatador.format(this).replace("R$", "R$ ")
+    return DecimalFormat.getCurrencyInstance(Locale("pt", "BR"))
+            .format(this)
+            .replace("R$", "R$ ")
+            .replace("-R$ ", "R$ -")
+}
+
+fun BigDecimal.positivo(): Boolean {
+    return this >= BigDecimal.ZERO
 }
