@@ -1,15 +1,17 @@
 package br.com.dmagdaleno.financas.ui.activity
 
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.Toast
 import br.com.dmagdaleno.financas.R
-import br.com.dmagdaleno.financas.extension.formatado
 import br.com.dmagdaleno.financas.model.Tipo
 import br.com.dmagdaleno.financas.model.Transacao
 import br.com.dmagdaleno.financas.ui.ResumoView
 import br.com.dmagdaleno.financas.ui.adapter.ListaTransacoesAdapter
 import kotlinx.android.synthetic.main.activity_lista_transacoes.*
-import kotlinx.android.synthetic.main.resumo_card.*
 import java.math.BigDecimal
 
 class ListaTransacoesActivity: AppCompatActivity() {
@@ -23,6 +25,17 @@ class ListaTransacoesActivity: AppCompatActivity() {
         configuraResumo(transacoes)
 
         configuraListaTransacoes(transacoes)
+
+        lista_transacoes_adiciona_receita.setOnClickListener{
+            val parent = window.decorView as ViewGroup
+            val view = LayoutInflater.from(this)
+                    .inflate(R.layout.form_transacao, parent, false)
+
+            AlertDialog.Builder(this)
+                    .setTitle(R.string.receita)
+                    .setView(view)
+                    .show()
+        }
     }
 
     private fun configuraResumo(transacoes: List<Transacao>) {
