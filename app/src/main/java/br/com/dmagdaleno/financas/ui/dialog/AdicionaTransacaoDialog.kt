@@ -27,7 +27,7 @@ class AdicionaTransacaoDialog(private val context: Context,
 
         configuraCampoData()
 
-        configuraCampoCategoria()
+        configuraCampoCategoria(tipo)
 
         configuraFormulario(tipo, delegate)
 
@@ -72,12 +72,19 @@ class AdicionaTransacaoDialog(private val context: Context,
         }
     }
 
-    private fun configuraCampoCategoria() {
+    private fun configuraCampoCategoria(tipo: Tipo) {
+        val categorias = categoriasPor(tipo)
         val adapter = ArrayAdapter.createFromResource(context,
-                R.array.categorias_de_receita,
+                categorias,
                 android.R.layout.simple_spinner_dropdown_item)
 
         layout.form_transacao_categoria.adapter = adapter
+    }
+
+    private fun categoriasPor(tipo: Tipo) : Int {
+        if(tipo == Tipo.RECEITA)
+            return R.array.categorias_de_receita
+        return R.array.categorias_de_despesa
     }
 
     private fun configuraCampoData() {
