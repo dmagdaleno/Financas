@@ -13,7 +13,6 @@ import br.com.dmagdaleno.financas.extension.converteEmCalendar
 import br.com.dmagdaleno.financas.extension.formatada
 import br.com.dmagdaleno.financas.model.Tipo
 import br.com.dmagdaleno.financas.model.Transacao
-import kotlinx.android.synthetic.main.activity_lista_transacoes.*
 import kotlinx.android.synthetic.main.form_transacao.view.*
 import java.math.BigDecimal
 import java.util.*
