@@ -37,7 +37,7 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     private fun chamaDialogAdicionaTransacao(tipo: Tipo) {
         AdicionaTransacaoDialog(this, window.decorView as ViewGroup)
-                .configuraDialog(tipo, object : AdicionaTransacaoDelegate {
+                .exibe(tipo, object : AdicionaTransacaoDelegate {
                     override fun finaliza(transacao: Transacao) {
                         atualizaTransacoes(transacao)
                         lista_transacoes_adiciona_menu.close(true)

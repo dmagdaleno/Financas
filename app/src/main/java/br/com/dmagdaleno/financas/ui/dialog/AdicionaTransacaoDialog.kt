@@ -22,15 +22,14 @@ class AdicionaTransacaoDialog(private val context: Context,
                               private val parent: ViewGroup) {
 
     val layout: View = criaLayout()
+    private val campoValor = layout.form_transacao_valor
+    private val campoCategorias = layout.form_transacao_categoria
+    private val campoData = layout.form_transacao_data
 
-    fun configuraDialog(tipo: Tipo, delegate: AdicionaTransacaoDelegate) {
-
+    fun exibe(tipo: Tipo, delegate: AdicionaTransacaoDelegate) {
         configuraCampoData()
-
         configuraCampoCategoria(tipo)
-
         configuraFormulario(tipo, delegate)
-
     }
 
     private fun configuraFormulario(tipo: Tipo, delegate: AdicionaTransacaoDelegate) {
@@ -38,13 +37,11 @@ class AdicionaTransacaoDialog(private val context: Context,
             .setTitle(escolheTituloPor(tipo))
             .setView(layout)
             .setPositiveButton("Adicionar") { _, _ ->
-                val valorTexto = layout.form_transacao_valor.text.toString()
-                val data = layout.form_transacao_data.text.toString()
-                val categoria = layout.form_transacao_categoria.selectedItem.toString()
+                val valorTexto = campoValor.text.toString()
+                val data = campoData.text.toString()
+                val categoria = campoCategorias.selectedItem.toString()
 
-                var valor = paraBigDecimal(valorTexto)
-
-                val transacao = Transacao(valor = valor,
+                val transacao = Transacao(valor = paraBigDecimal(valorTexto),
                         data = data.converteEmCalendar(),
                         categoria = categoria,
                         tipo = tipo)
@@ -78,7 +75,7 @@ class AdicionaTransacaoDialog(private val context: Context,
                 categorias,
                 android.R.layout.simple_spinner_dropdown_item)
 
-        layout.form_transacao_categoria.adapter = adapter
+        campoCategorias.adapter = adapter
     }
 
     private fun categoriasPor(tipo: Tipo) : Int {
@@ -94,13 +91,13 @@ class AdicionaTransacaoDialog(private val context: Context,
         val mes = hoje.get(Calendar.MONTH)
         val dia = hoje.get(Calendar.DAY_OF_MONTH)
 
-        layout.form_transacao_data.setText(hoje.formatada())
-        layout.form_transacao_data.setOnClickListener {
+        campoData.setText(hoje.formatada())
+        campoData.setOnClickListener {
             DatePickerDialog(context,
                 DatePickerDialog.OnDateSetListener { _, ano, mes, dia ->
                     val dataSelecionada = Calendar.getInstance()
                     dataSelecionada.set(ano, mes, dia)
-                    layout.form_transacao_data.setText(dataSelecionada.formatada())
+                    campoData.setText(dataSelecionada.formatada())
                 },
                 ano, mes, dia
             )
