@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import br.com.dmagdaleno.financas.R
+import br.com.dmagdaleno.financas.extension.converteEmCalendar
 import br.com.dmagdaleno.financas.extension.formatada
 import br.com.dmagdaleno.financas.model.Tipo
 import br.com.dmagdaleno.financas.model.Transacao
@@ -21,15 +22,13 @@ import java.util.*
 
 class ListaTransacoesActivity: AppCompatActivity() {
 
+    private val transacoes: MutableList<Transacao> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_transacoes)
 
-        val transacoes: List<Transacao> = listaTransacoesDeExemplo()
-
-        configuraResumo(transacoes)
-
-        configuraListaTransacoes(transacoes)
+        atualizaTransacoes()
 
         lista_transacoes_adiciona_receita.setOnClickListener{
             val parent = window.decorView as ViewGroup
@@ -62,51 +61,50 @@ class ListaTransacoesActivity: AppCompatActivity() {
             AlertDialog.Builder(this)
                     .setTitle(R.string.receita)
                     .setView(view)
-                    .setPositiveButton("Adicionar", null)
+                    .setPositiveButton("Adicionar", { dialog, i ->
+                        val valorTexto = view.form_transacao_valor.text.toString()
+                        val data = view.form_transacao_data.text.toString()
+                        val categoria = view.form_transacao_categoria.selectedItem.toString()
+
+                        var valor = try{
+                            BigDecimal(valorTexto)
+                        } catch(exception: NumberFormatException) {
+                            Toast.makeText(this, "Falha na conversão de valor",
+                                Toast.LENGTH_LONG).show()
+                            BigDecimal.ZERO
+                        }
+
+                        val transacao = Transacao(valor = valor,
+                                data = data.converteEmCalendar(),
+                                categoria = categoria,
+                                tipo = Tipo.RECEITA)
+
+                        transacoes.add(transacao)
+
+                        atualizaTransacoes()
+                        lista_transacoes_adiciona_menu.close(true)
+                    })
                     .setNegativeButton("Cancelar", null)
                     .show()
         }
     }
 
-    private fun configuraResumo(transacoes: List<Transacao>) {
+    private fun atualizaTransacoes() {
+        configuraResumo()
+
+        configuraListaTransacoes()
+    }
+
+    private fun configuraResumo() {
         val view = window.decorView
         val resumoView = ResumoView(this, view, transacoes)
         resumoView.atualiza()
     }
 
-    private fun configuraListaTransacoes(transacoes: List<Transacao>) {
+    private fun configuraListaTransacoes() {
         val adapter = ListaTransacoesAdapter(this, transacoes)
 
         lista_transacoes_listview.adapter = adapter
     }
 
-    private fun listaTransacoesDeExemplo(): List<Transacao> {
-        return listOf (
-                Transacao(
-                    valor = BigDecimal(10),
-                    categoria = "Despesa indefinida",
-                    tipo = Tipo.DESPESA
-                ),
-                Transacao(
-                    valor = BigDecimal(1000),
-                    categoria = "Lazer",
-                    tipo = Tipo.DESPESA
-                ),
-                Transacao(
-                    valor = BigDecimal(9000),
-                    categoria = "Salário",
-                    tipo = Tipo.RECEITA
-                ),
-                Transacao(
-                    valor = BigDecimal(20.5),
-                    categoria = "Comida",
-                    tipo = Tipo.DESPESA
-                ),
-                Transacao(
-                    valor = BigDecimal(100),
-                    categoria = "Economia",
-                    tipo = Tipo.RECEITA
-                )
-        )
-    }
 }
