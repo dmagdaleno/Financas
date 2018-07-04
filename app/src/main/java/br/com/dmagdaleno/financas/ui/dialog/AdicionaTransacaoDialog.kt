@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import br.com.dmagdaleno.financas.R
+import br.com.dmagdaleno.financas.delegate.AdicionaTransacaoDelegate
 import br.com.dmagdaleno.financas.extension.converteEmCalendar
 import br.com.dmagdaleno.financas.extension.formatada
 import br.com.dmagdaleno.financas.model.Tipo
@@ -22,19 +23,19 @@ class AdicionaTransacaoDialog(private val context: Context,
 
     val layout: View = criaLayout()
 
-    private fun configuraDialog() {
+    fun configuraDialog(tipo: Tipo, delegate: AdicionaTransacaoDelegate) {
 
         configuraCampoData()
 
         configuraCampoCategoria()
 
-        configuraFormulario()
+        configuraFormulario(tipo, delegate)
 
     }
 
-    private fun configuraFormulario() {
+    private fun configuraFormulario(tipo: Tipo, delegate: AdicionaTransacaoDelegate) {
         AlertDialog.Builder(context)
-            .setTitle(R.string.receita)
+            .setTitle(escolheTituloPor(tipo))
             .setView(layout)
             .setPositiveButton("Adicionar") { _, _ ->
                 val valorTexto = layout.form_transacao_valor.text.toString()
@@ -46,11 +47,19 @@ class AdicionaTransacaoDialog(private val context: Context,
                 val transacao = Transacao(valor = valor,
                         data = data.converteEmCalendar(),
                         categoria = categoria,
-                        tipo = Tipo.RECEITA)
+                        tipo = tipo)
+
+                delegate.finaliza(transacao)
 
             }
             .setNegativeButton("Cancelar", null)
             .show()
+    }
+
+    private fun escolheTituloPor(tipo: Tipo): Int {
+        if(tipo == Tipo.RECEITA)
+            return R.string.receita
+        return R.string.despesa
     }
 
     private fun paraBigDecimal(valorTexto: String): BigDecimal {
