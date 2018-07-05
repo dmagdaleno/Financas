@@ -38,13 +38,17 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     private fun chamaDialogAdicionaTransacao(tipo: Tipo) {
         AdicionaTransacaoDialog(this, window.decorView as ViewGroup)
-                .exibe(tipo, object : AdicionaTransacaoDelegate {
-                    override fun finaliza(transacao: Transacao) {
-                        transacoes.add(transacao)
-                        atualizaTransacoes()
-                        lista_transacoes_adiciona_menu.close(true)
-                    }
-                })
+            .exibe(tipo, object : AdicionaTransacaoDelegate {
+                override fun finaliza(transacao: Transacao) {
+                    adiciona(transacao)
+                    lista_transacoes_adiciona_menu.close(true)
+                }
+            })
+    }
+
+    private fun adiciona(transacao: Transacao) {
+        transacoes.add(transacao)
+        atualizaTransacoes()
     }
 
     private fun atualizaTransacoes() {
@@ -59,20 +63,28 @@ class ListaTransacoesActivity: AppCompatActivity() {
     }
 
     private fun configuraListaTransacoes() {
-        val adapter = ListaTransacoesAdapter(this, transacoes)
-        lista_transacoes_listview.adapter = adapter
-
-        lista_transacoes_listview.setOnItemClickListener { parent, view, posicao, id ->
-            val transacao = transacoes[posicao]
-            AlteraTransacaoDialog(this, window.decorView as ViewGroup)
-                .exibe(transacao, object : AdicionaTransacaoDelegate{
-                    override fun finaliza(transacao: Transacao) {
-                        transacoes[posicao] = transacao
-                        atualizaTransacoes()
-                    }
-
-                })
+        val listaTransacoesAdapter = ListaTransacoesAdapter(this, transacoes)
+        with(lista_transacoes_listview) {
+            adapter = listaTransacoesAdapter
+            setOnItemClickListener { parent, view, posicao, id ->
+                val transacao = transacoes[posicao]
+                chamaDialogAlteraTransacao(transacao, posicao)
+            }
         }
+    }
+
+    private fun chamaDialogAlteraTransacao(transacao: Transacao, posicao: Int) {
+        AlteraTransacaoDialog(this, window.decorView as ViewGroup)
+            .exibe(transacao, object : AdicionaTransacaoDelegate {
+                override fun finaliza(transacao: Transacao) {
+                    altera(transacao, posicao)
+                }
+            })
+    }
+
+    private fun altera(transacao: Transacao, posicao: Int) {
+        transacoes[posicao] = transacao
+        atualizaTransacoes()
     }
 
 }
