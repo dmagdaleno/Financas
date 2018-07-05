@@ -55,8 +55,8 @@ class AdicionaTransacaoDialog(private val context: Context,
 
     private fun escolheTituloPor(tipo: Tipo): Int {
         if(tipo == Tipo.RECEITA)
-            return R.string.receita
-        return R.string.despesa
+            return R.string.adiciona_receita
+        return R.string.adiciona_despesa
     }
 
     private fun paraBigDecimal(valorTexto: String): BigDecimal {
