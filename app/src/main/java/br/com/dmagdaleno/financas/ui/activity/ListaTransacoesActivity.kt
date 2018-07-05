@@ -10,6 +10,7 @@ import br.com.dmagdaleno.financas.model.Transacao
 import br.com.dmagdaleno.financas.ui.ResumoView
 import br.com.dmagdaleno.financas.ui.adapter.ListaTransacoesAdapter
 import br.com.dmagdaleno.financas.ui.dialog.AdicionaTransacaoDialog
+import br.com.dmagdaleno.financas.ui.dialog.AlteraTransacaoDialog
 import kotlinx.android.synthetic.main.activity_lista_transacoes.*
 
 class ListaTransacoesActivity: AppCompatActivity() {
@@ -20,7 +21,7 @@ class ListaTransacoesActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_transacoes)
 
-        atualizaTransacoes(null)
+        atualizaTransacoes()
 
         configuraFab()
     }
@@ -39,18 +40,15 @@ class ListaTransacoesActivity: AppCompatActivity() {
         AdicionaTransacaoDialog(this, window.decorView as ViewGroup)
                 .exibe(tipo, object : AdicionaTransacaoDelegate {
                     override fun finaliza(transacao: Transacao) {
-                        atualizaTransacoes(transacao)
+                        transacoes.add(transacao)
+                        atualizaTransacoes()
                         lista_transacoes_adiciona_menu.close(true)
                     }
                 })
     }
 
-    private fun atualizaTransacoes(transacao: Transacao?) {
-        if (transacao != null)
-            transacoes.add(transacao)
-
+    private fun atualizaTransacoes() {
         configuraResumo()
-
         configuraListaTransacoes()
     }
 
@@ -62,8 +60,19 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     private fun configuraListaTransacoes() {
         val adapter = ListaTransacoesAdapter(this, transacoes)
-
         lista_transacoes_listview.adapter = adapter
+
+        lista_transacoes_listview.setOnItemClickListener { parent, view, posicao, id ->
+            val transacao = transacoes[posicao]
+            AlteraTransacaoDialog(this, window.decorView as ViewGroup)
+                .exibe(transacao, object : AdicionaTransacaoDelegate{
+                    override fun finaliza(transacao: Transacao) {
+                        transacoes[posicao] = transacao
+                        atualizaTransacoes()
+                    }
+
+                })
+        }
     }
 
 }
