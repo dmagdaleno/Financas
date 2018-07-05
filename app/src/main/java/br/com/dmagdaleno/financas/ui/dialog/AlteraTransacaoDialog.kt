@@ -26,17 +26,25 @@ class AlteraTransacaoDialog(private val context: Context,
     private val campoCategorias = layout.form_transacao_categoria
     private val campoData = layout.form_transacao_data
 
-    fun exibe(tipo: Tipo, delegate: AdicionaTransacaoDelegate) {
+    fun exibe(transacao: Transacao, delegate: AdicionaTransacaoDelegate) {
         configuraCampoData()
-        configuraCampoCategoria(tipo)
-        configuraFormulario(tipo, delegate)
+        configuraCampoCategoria(transacao.tipo)
+        configuraFormulario(transacao.tipo, delegate)
+
+        campoValor.setText(transacao.valor.toString())
+        campoData.setText(transacao.data.formatada())
+        campoCategorias.setSelection(posicaoDaCategoria(transacao))
     }
+
+    private fun posicaoDaCategoria(transacao: Transacao) =
+            context.resources.getStringArray(categoriasPor(transacao.tipo))
+                    .indexOf(transacao.categoria)
 
     private fun configuraFormulario(tipo: Tipo, delegate: AdicionaTransacaoDelegate) {
         AlertDialog.Builder(context)
             .setTitle(escolheTituloPor(tipo))
             .setView(layout)
-            .setPositiveButton("Adicionar") { _, _ ->
+            .setPositiveButton("Alterar") { _, _ ->
                 val valorTexto = campoValor.text.toString()
                 val data = campoData.text.toString()
                 val categoria = campoCategorias.selectedItem.toString()
@@ -55,8 +63,8 @@ class AlteraTransacaoDialog(private val context: Context,
 
     private fun escolheTituloPor(tipo: Tipo): Int {
         if(tipo == Tipo.RECEITA)
-            return R.string.receita
-        return R.string.despesa
+            return R.string.altera_receita
+        return R.string.altera_despesa
     }
 
     private fun paraBigDecimal(valorTexto: String): BigDecimal {
@@ -91,7 +99,6 @@ class AlteraTransacaoDialog(private val context: Context,
         val mes = hoje.get(Calendar.MONTH)
         val dia = hoje.get(Calendar.DAY_OF_MONTH)
 
-        campoData.setText(hoje.formatada())
         campoData.setOnClickListener {
             DatePickerDialog(context,
                 DatePickerDialog.OnDateSetListener { _, ano, mes, dia ->
