@@ -2,6 +2,7 @@ package br.com.dmagdaleno.financas.ui.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.view.ViewGroup
 import br.com.dmagdaleno.financas.R
 import br.com.dmagdaleno.financas.delegate.AdicionaTransacaoDelegate
@@ -17,9 +18,13 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     private val transacoes: MutableList<Transacao> = mutableListOf()
 
+    private var parent: View? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_transacoes)
+
+        parent = window.decorView
 
         atualizaTransacoes()
 
@@ -37,7 +42,7 @@ class ListaTransacoesActivity: AppCompatActivity() {
     }
 
     private fun chamaDialogAdicionaTransacao(tipo: Tipo) {
-        AdicionaTransacaoDialog(this, window.decorView as ViewGroup)
+        AdicionaTransacaoDialog(this, parent as ViewGroup)
             .exibe(tipo, object : AdicionaTransacaoDelegate {
                 override fun finaliza(transacao: Transacao) {
                     adiciona(transacao)
@@ -57,8 +62,7 @@ class ListaTransacoesActivity: AppCompatActivity() {
     }
 
     private fun configuraResumo() {
-        val view = window.decorView
-        val resumoView = ResumoView(this, view, transacoes)
+        val resumoView = ResumoView(this, parent, transacoes)
         resumoView.atualiza()
     }
 
@@ -74,7 +78,7 @@ class ListaTransacoesActivity: AppCompatActivity() {
     }
 
     private fun chamaDialogAlteraTransacao(transacao: Transacao, posicao: Int) {
-        AlteraTransacaoDialog(this, window.decorView as ViewGroup)
+        AlteraTransacaoDialog(this, parent as ViewGroup)
             .exibe(transacao, object : AdicionaTransacaoDelegate {
                 override fun finaliza(transacao: Transacao) {
                     altera(transacao, posicao)
