@@ -18,13 +18,11 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     private val transacoes: MutableList<Transacao> = mutableListOf()
 
-    private lateinit var parent: View
+    private val parent: View by lazy { window.decorView }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_transacoes)
-
-        parent = window.decorView
 
         atualizaTransacoes()
 
