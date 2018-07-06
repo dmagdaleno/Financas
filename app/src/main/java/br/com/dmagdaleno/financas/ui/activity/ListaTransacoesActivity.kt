@@ -18,7 +18,8 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     private val transacoes: MutableList<Transacao> = mutableListOf()
 
-    private val parent: View by lazy { window.decorView }
+    private val view: View by lazy { window.decorView }
+    private val parent: ViewGroup by lazy { view as ViewGroup }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +41,7 @@ class ListaTransacoesActivity: AppCompatActivity() {
     }
 
     private fun chamaDialogAdicionaTransacao(tipo: Tipo) {
-        AdicionaTransacaoDialog(this, parent as ViewGroup)
+        AdicionaTransacaoDialog(this, parent)
             .exibe(tipo, object : AdicionaTransacaoDelegate {
                 override fun finaliza(transacao: Transacao) {
                     adiciona(transacao)
@@ -60,7 +61,7 @@ class ListaTransacoesActivity: AppCompatActivity() {
     }
 
     private fun configuraResumo() {
-        val resumoView = ResumoView(this, parent, transacoes)
+        val resumoView = ResumoView(this, view, transacoes)
         resumoView.atualiza()
     }
 
@@ -76,7 +77,7 @@ class ListaTransacoesActivity: AppCompatActivity() {
     }
 
     private fun chamaDialogAlteraTransacao(transacao: Transacao, posicao: Int) {
-        AlteraTransacaoDialog(this, parent as ViewGroup)
+        AlteraTransacaoDialog(this, parent)
             .exibe(transacao, object : AdicionaTransacaoDelegate {
                 override fun finaliza(transacao: Transacao) {
                     altera(transacao, posicao)
