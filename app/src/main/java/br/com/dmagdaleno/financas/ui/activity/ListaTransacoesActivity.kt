@@ -79,11 +79,12 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     override fun onContextItemSelected(item: MenuItem?): Boolean {
         val itemId = item?.itemId
+        val menuInfo = item?.menuInfo as AdapterView.AdapterContextMenuInfo
+        val posicao = menuInfo.position
         if(itemId == 1) {
-            val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
-            val posicao = menuInfo.position
-            transacoes.removeAt(posicao)
-            atualizaTransacoes()
+            removeTransacaoNa(posicao)
+        } else if (itemId == 2) {
+            chamaDialogAlteraTransacao(transacoes[posicao], posicao)
         }
         return super.onContextItemSelected(item)
     }
@@ -100,6 +101,11 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     private fun altera(transacao: Transacao, posicao: Int) {
         transacoes[posicao] = transacao
+        atualizaTransacoes()
+    }
+
+    private fun removeTransacaoNa(posicao: Int) {
+        transacoes.removeAt(posicao)
         atualizaTransacoes()
     }
 
