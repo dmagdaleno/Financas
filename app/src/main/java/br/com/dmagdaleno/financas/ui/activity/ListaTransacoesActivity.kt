@@ -41,8 +41,8 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     private fun chamaDialogAdicionaTransacao(tipo: Tipo) {
         AdicionaTransacaoDialog(this, parent)
-            .exibe(tipo) { transacao ->
-                adiciona(transacao)
+            .exibe(tipo) { novaTransacao ->
+                adiciona(novaTransacao)
                 lista_transacoes_adiciona_menu.close(true)
             }
     }
@@ -75,7 +75,7 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     private fun chamaDialogAlteraTransacao(transacao: Transacao, posicao: Int) {
         AlteraTransacaoDialog(this, parent)
-            .exibe(transacao) { transacao -> altera(transacao, posicao) }
+            .exibe(transacao) { transacaoAlterada -> altera(transacaoAlterada, posicao) }
     }
 
     private fun altera(transacao: Transacao, posicao: Int) {
