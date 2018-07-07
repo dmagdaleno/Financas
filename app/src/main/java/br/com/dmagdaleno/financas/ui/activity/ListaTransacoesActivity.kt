@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
 import br.com.dmagdaleno.financas.R
-import br.com.dmagdaleno.financas.delegate.AdicionaTransacaoDelegate
 import br.com.dmagdaleno.financas.model.Tipo
 import br.com.dmagdaleno.financas.model.Transacao
 import br.com.dmagdaleno.financas.ui.ResumoView
@@ -42,12 +41,10 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     private fun chamaDialogAdicionaTransacao(tipo: Tipo) {
         AdicionaTransacaoDialog(this, parent)
-            .exibe(tipo, object : AdicionaTransacaoDelegate {
-                override fun finaliza(transacao: Transacao) {
-                    adiciona(transacao)
-                    lista_transacoes_adiciona_menu.close(true)
-                }
-            })
+            .exibe(tipo) { transacao ->
+                adiciona(transacao)
+                lista_transacoes_adiciona_menu.close(true)
+            }
     }
 
     private fun adiciona(transacao: Transacao) {
@@ -78,11 +75,7 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
     private fun chamaDialogAlteraTransacao(transacao: Transacao, posicao: Int) {
         AlteraTransacaoDialog(this, parent)
-            .exibe(transacao, object : AdicionaTransacaoDelegate {
-                override fun finaliza(transacao: Transacao) {
-                    altera(transacao, posicao)
-                }
-            })
+            .exibe(transacao) { transacao -> altera(transacao, posicao) }
     }
 
     private fun altera(transacao: Transacao, posicao: Int) {
