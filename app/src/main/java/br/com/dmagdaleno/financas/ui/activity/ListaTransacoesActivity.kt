@@ -2,10 +2,7 @@ package br.com.dmagdaleno.financas.ui.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import br.com.dmagdaleno.financas.R
 import br.com.dmagdaleno.financas.model.Tipo
@@ -70,17 +67,16 @@ class ListaTransacoesActivity: AppCompatActivity() {
                 chamaDialogAlteraTransacao(transacao, posicao)
             }
 
-            setOnCreateContextMenuListener { contextMenu, view, contextMenuInfo ->
-                contextMenu.add(Menu.NONE, 1, Menu.NONE, "Remover")
-                contextMenu.add(Menu.NONE, 2, Menu.NONE, "Alterar")
+            setOnCreateContextMenuListener { menu, _, _ ->
+                menu.add(Menu.NONE, 1, Menu.NONE, "Remover")
+                menu.add(Menu.NONE, 2, Menu.NONE, "Alterar")
             }
         }
     }
 
-    override fun onContextItemSelected(item: MenuItem?): Boolean {
-        val itemId = item?.itemId
-        val menuInfo = item?.menuInfo as AdapterView.AdapterContextMenuInfo
-        val posicao = menuInfo.position
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val itemId = item.itemId
+        val posicao = posicaoDoItemClicado(item.menuInfo)
         if(itemId == 1) {
             removeTransacaoNa(posicao)
         } else if (itemId == 2) {
@@ -88,6 +84,9 @@ class ListaTransacoesActivity: AppCompatActivity() {
         }
         return super.onContextItemSelected(item)
     }
+
+    private fun posicaoDoItemClicado(menuInfo: ContextMenu.ContextMenuInfo) =
+            (menuInfo as AdapterView.AdapterContextMenuInfo).position
 
     private fun chamaDialogAlteraTransacao(transacao: Transacao, posicao: Int) {
         AlteraTransacaoDialog(this, parent)
