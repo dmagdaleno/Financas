@@ -2,6 +2,7 @@ package br.com.dmagdaleno.financas.ui.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import br.com.dmagdaleno.financas.R
@@ -66,9 +67,14 @@ class ListaTransacoesActivity: AppCompatActivity() {
         val listaTransacoesAdapter = ListaTransacoesAdapter(this, transacoes)
         with(lista_transacoes_listview) {
             adapter = listaTransacoesAdapter
+
             setOnItemClickListener { parent, view, posicao, id ->
                 val transacao = transacoes[posicao]
                 chamaDialogAlteraTransacao(transacao, posicao)
+            }
+
+            setOnCreateContextMenuListener { contextMenu, view, contextMenuInfo ->
+                contextMenu.add(Menu.NONE, 1, Menu.NONE, "Remover")
             }
         }
     }
