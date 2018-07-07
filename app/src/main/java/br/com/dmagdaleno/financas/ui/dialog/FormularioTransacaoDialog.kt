@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import br.com.dmagdaleno.financas.R
-import br.com.dmagdaleno.financas.delegate.AdicionaTransacaoDelegate
 import br.com.dmagdaleno.financas.extension.converteEmCalendar
 import br.com.dmagdaleno.financas.extension.formatada
 import br.com.dmagdaleno.financas.model.Tipo
@@ -29,13 +28,13 @@ abstract class FormularioTransacaoDialog(
 
     abstract protected val tituloBotaoConfirmar: String
 
-    fun exibe(tipo: Tipo, delegate: AdicionaTransacaoDelegate) {
+    fun exibe(tipo: Tipo, finaliza: (transacao: Transacao) -> Unit) {
         configuraCampoData()
         configuraCampoCategoria(tipo)
-        configuraFormulario(tipo, delegate)
+        configuraFormulario(tipo, finaliza)
     }
 
-    private fun configuraFormulario(tipo: Tipo, delegate: AdicionaTransacaoDelegate) {
+    private fun configuraFormulario(tipo: Tipo, finaliza: (transacao: Transacao) -> Unit) {
         AlertDialog.Builder(context)
             .setTitle(escolheTituloPor(tipo))
             .setView(layout)
@@ -49,7 +48,7 @@ abstract class FormularioTransacaoDialog(
                         categoria = categoria,
                         tipo = tipo)
 
-                delegate.finaliza(transacao)
+                finaliza(transacao)
 
             }
             .setNegativeButton("Cancelar", null)
