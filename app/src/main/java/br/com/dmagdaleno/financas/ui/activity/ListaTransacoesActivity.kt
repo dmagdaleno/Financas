@@ -3,8 +3,10 @@ package br.com.dmagdaleno.financas.ui.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import br.com.dmagdaleno.financas.R
 import br.com.dmagdaleno.financas.model.Tipo
 import br.com.dmagdaleno.financas.model.Transacao
@@ -48,11 +50,6 @@ class ListaTransacoesActivity: AppCompatActivity() {
             }
     }
 
-    private fun adiciona(transacao: Transacao) {
-        transacoes.add(transacao)
-        atualizaTransacoes()
-    }
-
     private fun atualizaTransacoes() {
         configuraResumo()
         configuraListaTransacoes()
@@ -75,13 +72,30 @@ class ListaTransacoesActivity: AppCompatActivity() {
 
             setOnCreateContextMenuListener { contextMenu, view, contextMenuInfo ->
                 contextMenu.add(Menu.NONE, 1, Menu.NONE, "Remover")
+                contextMenu.add(Menu.NONE, 2, Menu.NONE, "Alterar")
             }
         }
+    }
+
+    override fun onContextItemSelected(item: MenuItem?): Boolean {
+        val itemId = item?.itemId
+        if(itemId == 1) {
+            val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
+            val posicao = menuInfo.position
+            transacoes.removeAt(posicao)
+            atualizaTransacoes()
+        }
+        return super.onContextItemSelected(item)
     }
 
     private fun chamaDialogAlteraTransacao(transacao: Transacao, posicao: Int) {
         AlteraTransacaoDialog(this, parent)
             .exibe(transacao) { transacaoAlterada -> altera(transacaoAlterada, posicao) }
+    }
+
+    private fun adiciona(transacao: Transacao) {
+        transacoes.add(transacao)
+        atualizaTransacoes()
     }
 
     private fun altera(transacao: Transacao, posicao: Int) {
