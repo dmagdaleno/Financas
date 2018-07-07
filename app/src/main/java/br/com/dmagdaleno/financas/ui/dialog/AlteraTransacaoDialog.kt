@@ -3,7 +3,6 @@ package br.com.dmagdaleno.financas.ui.dialog
 import android.content.Context
 import android.view.ViewGroup
 import br.com.dmagdaleno.financas.R
-import br.com.dmagdaleno.financas.delegate.AdicionaTransacaoDelegate
 import br.com.dmagdaleno.financas.extension.formatada
 import br.com.dmagdaleno.financas.model.Tipo
 import br.com.dmagdaleno.financas.model.Transacao
@@ -16,8 +15,8 @@ class AlteraTransacaoDialog(
         get() = "Alterar"
 
 
-    fun exibe(transacao: Transacao, delegate: AdicionaTransacaoDelegate) {
-        super.exibe(transacao.tipo, delegate)
+    fun exibe(transacao: Transacao, finaliza: (transacao: Transacao) -> Unit) {
+        super.exibe(transacao.tipo, finaliza)
 
         campoValor.setText(transacao.valor.toString())
         campoData.setText(transacao.data.formatada())
