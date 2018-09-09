@@ -1,5 +1,6 @@
 package br.com.dmagdaleno.financas.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.*
@@ -110,4 +111,18 @@ class ListaTransacoesActivity: AppCompatActivity() {
         atualizaTransacoes()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_lista_transacoes, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menu_novo_objetivo -> {
+                val intent = Intent(this, FormularioObjetivoActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }
