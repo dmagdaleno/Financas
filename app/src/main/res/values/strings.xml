@@ -13,4 +13,14 @@
     <string name="total">Total</string>
     <string name="mes">Mês</string>
     <string name="ano">Ano</string>
+
+    <string name="descricao_label">Descrição:</string>
+    <string name="descricao_desc">Qual é o objetivo</string>
+    <string name="data_final_label">Data final:</string>
+    <string name="data_final_desc">Quando vai precisar do dinheiro</string>
+    <string name="valor_inicial_label">Valor inicial:</string>
+    <string name="valor_inicial_desc">Quanto dinheiro já reservou</string>
+    <string name="valor_total_label">Valor total:</string>
+    <string name="valor_total_desc">Quanto dinheiro precisa</string>
+
 </resources>
