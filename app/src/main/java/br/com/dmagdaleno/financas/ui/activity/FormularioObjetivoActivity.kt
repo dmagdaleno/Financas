@@ -6,7 +6,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import br.com.dmagdaleno.financas.R
+import br.com.dmagdaleno.financas.dao.DAO
+import br.com.dmagdaleno.financas.extension.converteEmCalendar
+import br.com.dmagdaleno.financas.model.Objetivo
 import kotlinx.android.synthetic.main.activity_formulario_objetivo.*
+import java.math.BigDecimal
 
 class FormularioObjetivoActivity : AppCompatActivity() {
 
@@ -28,8 +32,19 @@ class FormularioObjetivoActivity : AppCompatActivity() {
     }
 
     private fun salvaObjetivo() {
-        val objetivo = descricao.text.toString()
+        val objetivo = constroiObjetivo()
         Toast.makeText(this,
-                "Salvando objetivo $objetivo", Toast.LENGTH_SHORT).show()
+                "Salvando objetivo ${objetivo.descricao}", Toast.LENGTH_SHORT).show()
+
+        val dao = DAO(this)
+        dao.salva(objetivo)
     }
+
+    private fun constroiObjetivo() =
+            Objetivo(
+                valorTotal = BigDecimal(valor_total.text.toString()),
+                valorAtual = BigDecimal(valor_total.text.toString()),
+                valorInicial = BigDecimal(valor_total.text.toString()),
+                dataFinal = data_final.text.toString().converteEmCalendar(),
+                descricao = descricao.text.toString())
 }
