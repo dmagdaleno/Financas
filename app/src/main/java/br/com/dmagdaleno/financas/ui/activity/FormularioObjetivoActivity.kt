@@ -33,11 +33,15 @@ class FormularioObjetivoActivity : AppCompatActivity() {
 
     private fun salvaObjetivo() {
         val objetivo = constroiObjetivo()
+
         Toast.makeText(this,
                 "Salvando objetivo ${objetivo.descricao}", Toast.LENGTH_SHORT).show()
 
         val dao = DAO(this)
         dao.salva(objetivo)
+        dao.close()
+
+        finish()
     }
 
     private fun constroiObjetivo() =
