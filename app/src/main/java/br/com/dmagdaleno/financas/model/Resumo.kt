@@ -15,6 +15,7 @@ class Resumo(private val transacoes: List<Transacao>) {
     fun somatorioPor(tipo: Tipo): BigDecimal =
         BigDecimal(transacoes
                 .filter { it.tipo == tipo }
-                .sumByDouble { it.valor.toDouble() })
+                .sumByDouble { it.valor.toDouble() }
+        )
 
 }
